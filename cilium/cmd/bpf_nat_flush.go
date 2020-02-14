@@ -50,8 +50,11 @@ func flushNat() {
 			err = m.Open()
 		}
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Unable to open %s: %s", path, err)
-			continue
+			if err == os.ErrNotExist {
+				fmt.Fprintf(os.Stderr, "Unable to open %s: %s. Skipping.", path, err)
+				continue
+			}
+			Fatalf("Unable to open %s: %s", path, err)
 		}
 		defer m.Close()
 		entries := m.Flush()

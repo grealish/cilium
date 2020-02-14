@@ -59,10 +59,10 @@ func dumpCt(eID string) {
 		}
 		if err != nil {
 			if err == os.ErrNotExist {
-				Fatalf("Unable to open %s: %s: please try using \"cilium bpf ct list global\"", path, err)
-			} else {
-				Fatalf("Unable to open %s: %s", path, err)
+				fmt.Fprintf(os.Stderr, "Unable to open %s: %s: please try using \"cilium bpf ct list global\". Skipping", path, err)
+				continue
 			}
+			Fatalf("Unable to open %s: %s", path, err)
 		}
 		defer m.Close()
 		if command.OutputJSON() {
